@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>강원대 특강 — 2026</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --fg: #f5f5f5;
+    --muted: #8a8a8a;
+    --dim: #4a4a4a;
+    --accent: #ffcc4d;
+    --before: #ff6b6b;
+    --after: #6bd968;
+    --code-bg: #161616;
+    --divider: #2a2a2a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+                 "Pretendard", "Noto Sans KR", "Helvetica Neue", sans-serif;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    padding: 6vh 8vw;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .slide.active {
+    display: flex;
+    opacity: 1;
+  }
+
+  /* ---------- Type: Title ---------- */
+  .slide.title h1 {
+    font-size: clamp(2.5rem, 5.5vw, 5.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+  }
+  .slide.title .meta {
+    color: var(--muted);
+    font-size: clamp(1rem, 1.4vw, 1.4rem);
+    line-height: 1.8;
+  }
+
+  /* ---------- Type: Section Title ---------- */
+  .slide.section .num {
+    font-size: clamp(3.5rem, 8vw, 8rem);
+    color: var(--accent);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+  .slide.section h2 {
+    font-size: clamp(2.2rem, 5vw, 5rem);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  /* ---------- Type: Impact ---------- */
+  .slide.impact .text {
+    font-size: clamp(2.6rem, 5.5vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    max-width: 22ch;
+  }
+  .slide.impact .text.smaller {
+    font-size: clamp(2rem, 4vw, 4rem);
+  }
+  .slide.impact .pause {
+    color: var(--muted);
+    font-size: clamp(1.4rem, 2.2vw, 2.2rem);
+    margin: 1.5rem 0;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .slide.impact .quote-mark {
+    color: var(--accent);
+  }
+  .slide.impact .footnote {
+    margin-top: 3rem;
+    color: var(--muted);
+    font-size: clamp(0.95rem, 1.2vw, 1.2rem);
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 36ch;
+  }
+
+  /* ---------- Type: Quote ---------- */
+  .slide.quote .q {
+    font-size: clamp(2rem, 4.2vw, 4.2rem);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    max-width: 22ch;
+    position: relative;
+  }
+  .slide.quote .q::before {
+    content: "\201C";
+    position: absolute;
+    left: -0.4em;
+    top: -0.3em;
+    font-size: 1.6em;
+    color: var(--accent);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .slide.quote .attribution {
+    margin-top: 2.5rem;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.3vw, 1.3rem);
+  }
+  .slide.quote .context {
+    color: var(--muted);
+    font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- Type: Before/After Split ---------- */
+  .slide.split {
+    padding: 6vh 6vw;
+  }
+  .split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1400px;
+    margin-bottom: 2.5rem;
+  }
+  .split-col {
+    padding: 1.5rem 1.5rem;
+  }
+  .split-col h3 {
+    font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 2rem;
+  }
+  .split-col.before h3 { color: var(--before); }
+  .split-col.after h3 { color: var(--after); }
+  .split-col .body {
+    font-size: clamp(1.5rem, 2.4vw, 2.4rem);
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+  }
+  .split-col .body .item {
+    margin-bottom: 0.6rem;
+  }
+  .split-divider {
+    background: var(--divider);
+    width: 1px;
+  }
+  .split-footnote {
+    color: var(--muted);
+    font-size: clamp(0.9rem, 1.15vw, 1.15rem);
+    line-height: 1.7;
+    max-width: 60ch;
+    border-top: 1px solid var(--divider);
+    padding-top: 1.5rem;
+    margin-top: 1rem;
+  }
+  .split-footnote .label {
+    color: var(--fg);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  /* ---------- Type: Code ---------- */
+  .slide.code {
+    padding: 5vh 6vw;
+  }
+  .slide.code .code-block {
+    font-family: "JetBrains Mono", "SF Mono", "Menlo", "Consolas", monospace;
+    background: var(--code-bg);
+    border-radius: 8px;
+    padding: 2rem 2.5rem;
+    font-size: clamp(0.95rem, 1.5vw, 1.5rem);
+    line-height: 1.7;
+    text-align: left;
+    color: var(--fg);
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 1.5rem;
+    border-left: 3px solid var(--dim);
+  }
+  .slide.code .code-block.bad { border-left-color: var(--before); }
+  .slide.code .code-block.good { border-left-color: var(--after); }
+  .slide.code .code-block .comment { color: var(--muted); }
+  .slide.code .code-block .ok { color: var(--after); }
+  .slide.code .code-block .bad-mark { color: var(--before); }
+  .slide.code .compare-table {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem 2rem;
+    font-size: clamp(0.95rem, 1.3vw, 1.3rem);
+    text-align: left;
+    max-width: 900px;
+    width: 100%;
+    margin: 1.5rem 0;
+    line-height: 1.6;
+  }
+  .slide.code .compare-table .label { color: var(--muted); }
+  .slide.code .compare-table .verdict.know { color: var(--after); }
+  .slide.code .compare-table .verdict.dont { color: var(--before); }
+  .slide.code .punchline {
+    font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+    font-weight: 500;
+    color: var(--fg);
+    line-height: 1.6;
+    margin-top: 1rem;
+    max-width: 50ch;
+    text-align: center;
+  }
+
+  /* ---------- Type: Compare ---------- */
+  .slide.compare h2 {
+    font-size: clamp(1.4rem, 2vw, 2rem);
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 3rem;
+  }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1.5rem 3rem;
+    align-items: center;
+    font-size: clamp(1.4rem, 2.2vw, 2.2rem);
+    font-weight: 500;
+    line-height: 1.5;
+    max-width: 1100px;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  .compare-grid .header {
+    color: var(--muted);
+    font-size: clamp(0.95rem, 1.3vw, 1.3rem);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--divider);
+  }
+  .compare-grid .arrow {
+    color: var(--accent);
+    font-size: 1.4em;
+    text-align: center;
+  }
+  .compare-grid .left { text-align: right; color: var(--muted); }
+  .compare-grid .right { text-align: left; color: var(--fg); font-weight: 600; }
+  .compare-center {
+    margin-top: 2rem;
+    font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+    color: var(--accent);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  /* ---------- Type: Story / Flow ---------- */
+  .slide.story .header {
+    font-size: clamp(1.1rem, 1.4vw, 1.4rem);
+    color: var(--muted);
+    margin-bottom: 2rem;
+    letter-spacing: 0.05em;
+  }
+  .slide.story .body {
+    font-size: clamp(1.6rem, 2.8vw, 2.8rem);
+    line-height: 1.6;
+    font-weight: 600;
+    max-width: 28ch;
+  }
+  .slide.story .body .em {
+    color: var(--accent);
+  }
+  .slide.story .footnote {
+    margin-top: 2.5rem;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.3vw, 1.3rem);
+  }
+  .slide.story .flow {
+    font-size: clamp(1.4rem, 2vw, 2rem);
+    line-height: 2;
+    color: var(--fg);
+    font-weight: 500;
+    margin-bottom: 2rem;
+  }
+  .slide.story .flow .step {
+    margin-bottom: 0.5rem;
+  }
+  .slide.story .flow .arrow {
+    color: var(--dim);
+    margin: 0 0.4em;
+  }
+
+  /* ---------- Type: Data ---------- */
+  .slide.data .label {
+    font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+    color: var(--muted);
+    margin-bottom: 2rem;
+    letter-spacing: 0.05em;
+  }
+  .data-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 2rem;
+  }
+  .data-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 2rem;
+    text-align: left;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--divider);
+  }
+  .data-row .name {
+    font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+    color: var(--muted);
+  }
+  .data-row .value {
+    font-size: clamp(1.4rem, 2.4vw, 2.4rem);
+    font-weight: 700;
+    color: var(--fg);
+    text-align: right;
+  }
+  .data-row .value.accent { color: var(--accent); }
+  .data-row .vs {
+    color: var(--dim);
+    font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+    font-weight: 500;
+  }
+  .data-big {
+    font-size: clamp(2.2rem, 4.5vw, 4.5rem);
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1.2;
+    margin: 1rem 0;
+  }
+  .data-big .unit {
+    font-size: 0.5em;
+    color: var(--muted);
+    font-weight: 500;
+    margin-left: 0.5em;
+  }
+  .data-source {
+    color: var(--muted);
+    font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+    margin-top: 1.5rem;
+    font-style: italic;
+  }
+  .data-footnote {
+    margin-top: 1.5rem;
+    color: var(--fg);
+    font-size: clamp(1rem, 1.4vw, 1.4rem);
+    line-height: 1.6;
+    max-width: 50ch;
+  }
+  .data-footnote .em {
+    color: var(--accent);
+  }
+
+  /* ---------- Type: Meme ---------- */
+  .slide.meme .chat-box {
+    background: var(--code-bg);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    font-family: "JetBrains Mono", "SF Mono", "Menlo", monospace;
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+    line-height: 1.8;
+    text-align: left;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 2rem;
+  }
+  .slide.meme .chat-box .user { color: var(--accent); }
+  .slide.meme .chat-box .bot { color: var(--muted); }
+  .slide.meme .chat-box .answer { color: var(--fg); font-weight: 600; }
+  .slide.meme .twist {
+    font-size: clamp(1.4rem, 2.2vw, 2.2rem);
+    color: var(--fg);
+    margin: 1.5rem 0;
+    font-weight: 600;
+  }
+  .slide.meme .now {
+    font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .slide.meme .answer-now {
+    color: var(--after);
+    font-weight: 600;
+  }
+  .slide.meme .tech-note {
+    margin-top: 2rem;
+    padding: 1rem 1.5rem;
+    background: var(--code-bg);
+    border-radius: 6px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: clamp(0.95rem, 1.3vw, 1.3rem);
+    color: var(--muted);
+    max-width: 700px;
+  }
+  .slide.meme .tech-note .em { color: var(--fg); }
+  .slide.meme .arrow-next {
+    margin-top: 2rem;
+    color: var(--accent);
+    font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+    font-weight: 600;
+  }
+
+  /* ---------- Type: TOC ---------- */
+  .slide.toc h2 {
+    font-size: clamp(1.3rem, 1.8vw, 1.8rem);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 3rem;
+    font-weight: 500;
+  }
+  .toc-list {
+    text-align: left;
+    list-style: none;
+    counter-reset: toc;
+  }
+  .toc-list li {
+    font-size: clamp(1.8rem, 3vw, 3rem);
+    font-weight: 600;
+    line-height: 1.8;
+    counter-increment: toc;
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+  }
+  .toc-list li::before {
+    content: "0" counter(toc);
+    color: var(--accent);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Type: List ---------- */
+  .slide.list h2 {
+    font-size: clamp(1.3rem, 1.7vw, 1.7rem);
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.05em;
+  }
+  .num-list {
+    list-style: none;
+    text-align: left;
+    counter-reset: numlist;
+    max-width: 900px;
+  }
+  .num-list li {
+    counter-increment: numlist;
+    margin-bottom: 1.5rem;
+    padding-left: 4rem;
+    position: relative;
+  }
+  .num-list li::before {
+    content: counter(numlist);
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--accent);
+    font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+    font-weight: 800;
+  }
+  .num-list .title {
+    font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .num-list .desc {
+    color: var(--muted);
+    font-size: clamp(1.05rem, 1.5vw, 1.5rem);
+    margin-top: 0.3rem;
+    font-weight: 400;
+  }
+  .list-emphasis {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--divider);
+    font-size: clamp(1.3rem, 2vw, 2rem);
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ---------- Type: Audience ---------- */
+  .slide.audience .text {
+    font-size: clamp(2.4rem, 5vw, 5rem);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    max-width: 22ch;
+  }
+  .slide.audience .or {
+    color: var(--muted);
+    font-size: clamp(1rem, 1.4vw, 1.4rem);
+    margin: 1.5rem 0;
+    letter-spacing: 0.1em;
+  }
+  .slide.audience .alt {
+    font-size: clamp(2rem, 4.5vw, 4.5rem);
+    font-weight: 600;
+    color: var(--muted);
+    line-height: 1.4;
+    max-width: 22ch;
+  }
+
+  /* ---------- Type: Simple ---------- */
+  .slide.simple .text {
+    font-size: clamp(4rem, 12vw, 14rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+
+  /* ---------- Slide number / progress ---------- */
+  .slide-number {
+    position: fixed;
+    bottom: 2rem;
+    right: 2.5rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.1em;
+    z-index: 10;
+    font-family: "JetBrains Mono", "SF Mono", monospace;
+  }
+  .slide-number .total { color: var(--dim); }
+
+  .progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+    z-index: 10;
+  }
+
+  .hint {
+    position: fixed;
+    bottom: 2rem;
+    left: 2.5rem;
+    color: var(--dim);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    z-index: 10;
+    transition: opacity 0.5s ease;
+  }
+  .hint.hidden { opacity: 0; }
+
+  /* ---------- Images ---------- */
+  .slide img {
+    max-width: 90%;
+    max-height: 60vh;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin: 1.5rem 0;
+    object-fit: contain;
+  }
+
+  /* ---------- Slide Reference ---------- */
+  .slide-ref {
+    position: absolute;
+    bottom: 3.8rem;
+    right: 2.5rem;
+    font-size: 0.65rem;
+    color: var(--dim);
+    font-family: "JetBrains Mono", "SF Mono", monospace;
+    opacity: 0.6;
+    text-align: right;
+    max-width: 52ch;
+    z-index: 5;
+    line-height: 1.5;
+  }
+
+  /* ---------- Screenshot Slot ---------- */
+  .ss-slot {
+    position: relative;
+    width: 100%;
+    max-width: 760px;
+    margin-bottom: 1.5rem;
+  }
+  .ss-slot img {
+    width: 100%;
+    max-height: 50vh;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: block;
+    object-fit: contain;
+    margin: 0;
+  }
+  .ss-slot .ss-fallback {
+    display: none;
+    border: 1px dashed var(--dim);
+    border-radius: 8px;
+    padding: 2.5rem 2rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--dim);
+    min-height: 200px;
+    justify-content: center;
+    text-align: center;
+  }
+  .ss-slot .ss-fallback .ss-file {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .ss-slot .ss-fallback .ss-url {
+    font-size: 0.72rem;
+    opacity: 0.55;
+    max-width: 46ch;
+    word-break: break-all;
+  }
+
+  /* ---------- Helpers ---------- */
+  .em { color: var(--accent); }
+  .muted { color: var(--muted); }
+  .small { font-size: 0.8em; color: var(--muted); }
+  .check { color: var(--after); }
+  .cross { color: var(--before); }
+
+  @media (max-width: 700px) {
+    .split-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .split-divider { display: none; }
+    .compare-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+    .compare-grid .arrow { display: none; }
+    .compare-grid .left { text-align: center; }
+    .compare-grid .right { text-align: center; }
+    .data-row { grid-template-columns: 1fr; gap: 0.5rem; }
+    .data-row .value { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- S01 Title -->
+  <section class="slide title">
+    <h1 style="margin-bottom: 2rem;">AI의 맑은 눈의 광기</h1>
+    <div style="display: flex; align-items: center; gap: 3vw; margin-bottom: 2.5rem;">
+      <img src="https://cdn.minsimnews.com/news/photo/202503/2861_4054_2637.jpg"
+           alt="맑은 눈의 광기"
+           style="height: clamp(160px, 26vh, 300px); width: auto; border-radius: 12px; box-shadow: 0 16px 48px rgba(0,0,0,0.6); object-fit: cover; flex-shrink: 0;" />
+      <div style="position: relative; background: var(--accent); color: #0a0a0a; padding: 1.2rem 1.8rem; border-radius: 16px; font-weight: 800; font-size: clamp(1.1rem, 1.9vw, 1.9rem); line-height: 1.4; text-align: left; margin-left: -3rem;">
+        <div style="position: absolute; left: -18px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-right: 18px solid var(--accent);"></div>
+        개떡같이 말하면<br>진짜 개떡을 줍니다
+      </div>
+    </div>
+    <div class="meta">
+      배필주 / Kurly, Staff Engineer<br>
+      2026. 05. 12
+    </div>
+  </section>
+
+  <!-- S02 훅 -->
+  <section class="slide impact">
+    <div class="text smaller">개발자가 AI에게 말했습니다.</div>
+    <div class="text" style="margin-top: 2rem;"><span class="quote-mark">"</span>테스트 통과시켜줘<span class="quote-mark">"</span></div>
+  </section>
+
+  <!-- S03 AI가 한 일 -->
+  <section class="slide split">
+    <div class="split-grid">
+      <div class="split-col before">
+        <h3>Before</h3>
+        <div class="body">테스트 실패 <span class="cross">❌</span></div>
+      </div>
+      <div class="split-divider"></div>
+      <div class="split-col after">
+        <h3>After</h3>
+        <div class="body">CI 녹색 <span class="check">✅</span></div>
+      </div>
+    </div>
+
+    <div style="display: flex; width: 100%; max-width: 1400px; justify-content: space-between; align-items: flex-end; padding: 0 4vw;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+        <div style="position: relative; background: var(--fg); color: #0a0a0a; padding: 0.5rem 1.1rem; border-radius: 10px; font-weight: 800; font-size: clamp(1rem, 1.6vw, 1.6rem);">
+          오?
+          <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 10px solid var(--fg);"></div>
+        </div>
+        <div style="font-size: clamp(2rem, 3.5vw, 3.5rem);">😮</div>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+        <div style="position: relative; background: var(--fg); color: #0a0a0a; padding: 0.5rem 1.1rem; border-radius: 10px; font-weight: 700; font-size: clamp(0.9rem, 1.3vw, 1.3rem); white-space: nowrap;">
+          "All tests pass" ✅
+          <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 10px solid var(--fg);"></div>
+        </div>
+        <div style="font-size: clamp(2rem, 3.5vw, 3.5rem);">🤖</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S04 밈 -->
+  <section class="slide impact">
+    <div style="font-size: clamp(0.95rem, 1.3vw, 1.3rem); color: var(--muted); text-align: center; margin-bottom: 1.2rem; line-height: 1.8;">
+      <span style="color: var(--fg); font-weight: 600;">실제로 일어난 일:</span><br>
+      테스트 코드 삭제 → CI 워크플로우에서 해당 카테고리 제외 → 코드는 완전히 망가진 상태
+    </div>
+    <div style="width: clamp(280px, 44vw, 560px); height: clamp(160px, 25vw, 315px); background: url('https://i.kym-cdn.com/entries/icons/original/000/022/138/highresrollsafe.jpg') center/cover no-repeat; background-color: #222; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between; padding: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 1.8rem;">
+      <div style="text-align: center; color: white; font-family: Impact, sans-serif; font-size: clamp(1.2rem, 2.2vw, 2.2rem); letter-spacing: 1px; text-transform: uppercase; text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;">Can't fail tests</div>
+      <div style="text-align: center; color: white; font-family: Impact, sans-serif; font-size: clamp(1.2rem, 2.2vw, 2.2rem); letter-spacing: 1px; text-transform: uppercase; text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;">If there are no tests</div>
+    </div>
+  </section>
+
+  <!-- S05 우리가 원했던 것 -->
+  <section class="slide impact">
+    <div style="display: grid; grid-template-columns: 1fr 1px 1fr; width: 100%; max-width: 1000px; align-items: start; gap: 0;">
+      <div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 4vw;">
+        <div style="font-size: clamp(0.85rem, 1.1vw, 1.1rem); color: var(--after); text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; height: 2.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">AI가 아는 것</div>
+        <div style="font-size: clamp(2rem, 3.2vw, 3.2rem); font-weight: 800; color: var(--accent); line-height: 1.3;">테스트<br>통과시켜줘</div>
+      </div>
+      <div style="width: 1px; background: var(--divider); align-self: stretch;"></div>
+      <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; padding: 0 4vw;">
+        <div style="font-size: clamp(0.85rem, 1.1vw, 1.1rem); color: var(--before); text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; height: 2.5rem; display: flex; align-items: center; margin-bottom: 2rem;">AI가 모르는 것</div>
+        <div style="font-size: clamp(1.3rem, 2vw, 2rem); font-weight: 600; line-height: 2.4;">
+          <div><span style="color: var(--muted);">코드를</span> <span style="color: var(--fg);">고쳐서</span></div>
+          <div><span style="color: var(--muted);">API는</span> <span style="color: var(--fg);">유지하면서</span></div>
+          <div><span style="color: var(--muted);">다른 기능은</span> <span style="color: var(--fg);">건드리지 말고</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S06 원숭이 손의 저주 -->
+  <section class="slide quote">
+    <div class="context">Hacker News 반응</div>
+    <div class="q">AI는 원숭이 손(Monkey's Paw)과 같다.<br>소원은 정확히 들어주지만,<br>결과는 끔찍하다.</div>
+    <div class="attribution">말하지 않았기 때문에 모릅니다.</div>
+  </section>
+
+  <!-- S07 Goodhart's Law -->
+  <section class="slide impact">
+    <div class="text smaller" style="color: var(--muted); font-weight: 400; margin-bottom: 2rem;">AI는 거짓말한 게 아닙니다.</div>
+    <div class="text">당신이 말한 것을<br>최적화했을 <span class="em">뿐</span>입니다.<br><span style="font-size:0.6em; color:var(--muted); font-weight:400;">당신이 원하는 것이 아니라.</span></div>
+    <div class="footnote">
+      <strong style="color:var(--accent);">Goodhart's Law:</strong>
+      "측정 기준이 목표가 되는 순간, 더 이상 좋은 측정 기준이 아닙니다."
+    </div>
+  </section>
+
+  <!-- S08 Strawberry 밈 -->
+  <section class="slide impact">
+    <div class="ss-slot" style="max-width: 800px;">
+      <img src="./screenshots/s08-strawberry.png" alt="ChatGPT strawberry"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="ss-fallback">
+        <div style="font-size:1.4rem;">📸</div>
+        <div class="ss-file">s08-strawberry.png</div>
+        <div class="ss-url">distractify.com/p/chatgpt-how-many-rs-in-strawberry<br>또는 tiktok.com/@yallwatchthis/video/7407266420184075562</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S09 Tokenization -->
+  <section class="slide impact" style="gap: 2.5rem;">
+    <div style="display: flex; flex-direction: column; gap: 2rem; width: 100%; max-width: 860px; text-align: left;">
+      <div>
+        <div style="font-size: clamp(0.85rem, 1.1vw, 1.1rem); color: var(--after); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; margin-bottom: 0.8rem;">우리가 보는 것: 문자열(String)</div>
+        <div style="font-size: clamp(1.2rem, 1.9vw, 1.9rem); font-weight: 600; line-height: 1.6;">
+          ['s', 't', 'r', 'a', 'w', 'b', 'e', 'r', 'r', 'y']<br>
+          <span class="check">→ "r이 3개네!"</span>
+        </div>
+      </div>
+      <div style="width: 100%; height: 1px; background: var(--divider);"></div>
+      <div>
+        <div style="font-size: clamp(0.85rem, 1.1vw, 1.1rem); color: var(--before); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; margin-bottom: 0.8rem;">AI가 보는 것: 토큰(Token)</div>
+        <div style="font-size: clamp(1.2rem, 1.9vw, 1.9rem); font-weight: 600; line-height: 1.6;">
+          [Token ID: <span class="em">49323</span>]<br>
+          <span class="cross">→ "이게 무슨 글자로 이루어져 있는지는 모름"</span>
+        </div>
+      </div>
+    </div>
+    <div style="font-size: clamp(1rem, 1.4vw, 1.4rem); color: var(--muted); text-align: center;">
+      멍청한 게 아닙니다. 단순한 <span class="em">기술적 한계</span>였을 뿐입니다.
+    </div>
+  </section>
+
+  <!-- S10 Project Strawberry -->
+  <section class="slide list">
+    <p style="color: var(--dim); font-size: clamp(0.8rem, 1vw, 1rem); font-style: italic; margin-bottom: 1rem;">TMI: OpenAI o1 개발 프로젝트명이 실제로 'Strawberry'였습니다</p>
+    <h2 style="color: var(--fg); margin-bottom: 2.5rem;">단순히 지능을 높인 게 아니라,<br>AI에게 <span class="em">'도구'</span>와 <span class="em">'시간'</span>을 주었습니다.</h2>
+    <ol class="num-list">
+      <li>
+        <div class="title">코드 실행</div>
+        <div class="desc">속으로 파이썬 코드를 짜서 직접 세어보게 함<br><span style="font-family: monospace; font-size: 0.9em;">len([c for c in "strawberry" if c == 'r'])</span></div>
+      </li>
+      <li>
+        <div class="title">사고 과정 (Chain of Thought)</div>
+        <div class="desc">답을 바로 뱉지 않고, 숨겨진 생각 과정 속에서 스스로 단어를 쪼개보고 틀리면 다시 검증하게 함</div>
+      </li>
+    </ol>
+    <div class="list-emphasis" style="font-size: clamp(1rem, 1.6vw, 1.6rem);">기술적 한계는 언제든 우회할 수 있습니다.</div>
+  </section>
+
+  <!-- S11 Deep Intent -->
+  <section class="slide impact" style="gap: 2rem;">
+    <div style="font-size: clamp(0.9rem, 1.2vw, 1.2rem); color: var(--muted); margin-bottom: 0.5rem;">진짜 본질적인 한계는 기술로 해결되지 않는</div>
+    <div class="text smaller" style="margin-bottom: 2rem;"><span class="em">"깊은 의도(Deep Intent)"</span></div>
+    <div style="display: flex; flex-direction: column; gap: 1.2rem; width: 100%; max-width: 860px; text-align: left;">
+      <div style="padding: 1.2rem 1.8rem; border-left: 3px solid var(--after); background: rgba(107,217,104,0.05);">
+        <div style="font-size: clamp(0.8rem, 1vw, 1rem); color: var(--after); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;">표면 의도 — AI가 압니다</div>
+        <div style="font-size: clamp(1.2rem, 1.8vw, 1.8rem); font-weight: 600;">"테스트 통과시켜줘"</div>
+      </div>
+      <div style="padding: 1.2rem 1.8rem; border-left: 3px solid var(--before); background: rgba(255,107,107,0.05);">
+        <div style="font-size: clamp(0.8rem, 1vw, 1rem); color: var(--before); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;">깊은 의도(암묵적 제약) — AI가 모릅니다</div>
+        <div style="font-size: clamp(1.2rem, 1.8vw, 1.8rem); font-weight: 600;">"코드를 고쳐서, 다른 기능은 건드리지 말고"</div>
+      </div>
+    </div>
+    <div style="font-size: clamp(0.9rem, 1.2vw, 1.2rem); color: var(--muted); margin-top: 0.5rem;">
+      이것이 굿하트의 법칙이 무서운 이유입니다.<br>
+      AI는 <span style="color:var(--fg);">"당신이 원하는 것"</span>이 아니라 <span class="em">"당신이 말한 것"</span>만 최적화합니다.
+    </div>
+  </section>
+
+  <!-- S12 중심 질문 -->
+  <section class="slide impact">
+    <div class="text">AI가 내 의도까지<br>잘 알고 있다고<br>생각하나요?</div>
+    <div class="footnote">
+      이 질문에 "개발자가 AI에 대체될 것인가"의<br>답이 있다고 생각합니다.
+    </div>
+  </section>
+
+  <!-- S13 TOC -->
+  <section class="slide toc">
+    <h2>오늘의 여정</h2>
+    <ol class="toc-list">
+      <li>AI를 대하는 현업 개발자의 이야기</li>
+      <li>안드로이드, 클라이언트 개발자를 꿈꾸는 분들께</li>
+      <li>지금 실제로 챙겨야 할 것들</li>
+    </ol>
+  </section>
+
+  <!-- S14 Topic 1 Section Title -->
+  <section class="slide section">
+    <div class="num">01.</div>
+    <h2>AI를 대하는<br>현업 개발자의 이야기</h2>
+  </section>
+
+  <!-- S15 신입 개발자의 첫 달 -->
+  <section class="slide impact">
+    <div class="text smaller" style="color: var(--muted); font-weight: 400; margin-bottom: 1.5rem;">여러분이 취업해서<br>'신입 개발자'로 입사하면,</div>
+    <div class="text">첫 달에 무슨 일을<br>가장 많이 할 것 같나요?</div>
+  </section>
+
+  <!-- S16 나의 첫 달 -->
+  <section class="slide quote">
+    <div class="context">새 조직 합류 첫 달의 경험</div>
+    <div class="q">제가 온보딩된 게 아니라,<br>내 AI를 팀에 온보딩시켰습니다.</div>
+    <div class="attribution">— 강연자의 최근 새 조직 합류 첫 달의 경험</div>
+  </section>
+
+  <!-- S17 현업 풍경이 바뀌었다 -->
+  <section class="slide compare">
+    <h2>현업 풍경이 바뀌었다</h2>
+    <div class="compare-grid">
+      <div class="header" style="text-align:right;">예전</div>
+      <div></div>
+      <div class="header" style="text-align:left;">지금</div>
+
+      <div class="left">코드 작성</div>
+      <div class="arrow">→</div>
+      <div class="right">의도 전달</div>
+
+      <div class="left">디버깅</div>
+      <div class="arrow">→</div>
+      <div class="right">결과 검증</div>
+
+      <div class="left">한 번에 하나씩</div>
+      <div class="arrow">→</div>
+      <div class="right">여러 AI 세션 병렬</div>
+    </div>
+    <div class="compare-center">"코드를 짜는 사람 → 의도를 설계하는 사람(Orchestrator)"</div>
+    <div class="slide-ref">helloworld.kurly.com</div>
+  </section>
+
+  <!-- S17-B 컬리 블로그 스크린샷 -->
+  <section class="slide impact">
+    <div class="ss-slot" style="max-width: 1000px;">
+      <img src="./screenshots/s17-kurly.png" alt="컬리 기술 블로그"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="ss-fallback" style="min-height: 360px;">
+        <div style="font-size:1.4rem;">📸</div>
+        <div class="ss-file">s17-kurly.png</div>
+        <div class="ss-url">helloworld.kurly.com — AI 토큰 사용량 전사 1위 개발자가 148,000번의 대화에서 배운 것</div>
+      </div>
+    </div>
+    <div class="slide-ref">helloworld.kurly.com</div>
+  </section>
+
+  <!-- S18 Stack Overflow 역설 -->
+  <section class="slide" style="flex-direction: row; padding: 0; align-items: stretch;">
+    <!-- 좌: 스크린샷 -->
+    <div style="flex: 1.6; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+      <img src="./screenshots/s18-stackoverflow.jpeg" alt="Stack Overflow 트래픽 붕괴"
+           style="width: 100%; height: auto; display: block;"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div style="display:none; flex-direction:column; align-items:center; justify-content:center; gap:0.8rem; color:var(--dim); width:100%; height:100%; border-right: 1px dashed var(--dim);">
+        <div style="font-size:1.4rem;">📸</div>
+        <div style="font-family:monospace; font-size:0.9rem; color:var(--muted);">s18-stackoverflow.jpeg</div>
+        <div style="font-size:0.75rem; opacity:0.6;">observablehq.com/@ayhanfuat/...</div>
+      </div>
+    </div>
+    <!-- 우: 캡션 -->
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 5vh 4vw; text-align: left; border-left: 1px solid var(--divider);">
+      <div style="font-size: clamp(0.85rem, 1.1vw, 1.1rem); color: var(--muted); letter-spacing: 0.05em; margin-bottom: 2rem;">Stack Overflow의 역설</div>
+      <div style="font-size: clamp(0.95rem, 1.3vw, 1.3rem); line-height: 2.2; color: var(--muted); margin-bottom: 2.5rem;">
+        <div><span class="em">[1단계]</span> ChatGPT: Stack Overflow 데이터로 학습</div>
+        <div><span class="em">[2단계]</span> Stack Overflow 트래픽 50% 붕괴</div>
+        <div><span class="em">[3단계]</span> Stack Overflow, 생존을 위해 AI 회사에 데이터 판매</div>
+      </div>
+      <div style="font-size: clamp(1.1rem, 1.6vw, 1.6rem); font-weight: 700; color: var(--fg); line-height: 1.5;">
+        "자기 무덤 파준 놈한테,<br>무덤 데이터도 팔았습니다."
+      </div>
+    </div>
+    <div class="slide-ref">observablehq.com/@ayhanfuat/the-fall-of-stack-overflow</div>
+  </section>
+
+  <!-- S19 Shopify -->
+  <section class="slide" style="flex-direction: row; padding: 0; align-items: stretch;">
+    <!-- 좌: 이미지 2장 -->
+    <div style="flex: 1.4; display: flex; flex-direction: column; overflow: hidden; gap: 2px; background: var(--bg);">
+      <img src="./screenshots/s19-shopify-1.png" alt="Shopify CEO 트윗 1"
+           style="width: 100%; flex: 1; object-fit: contain; object-position: center; min-height: 0;">
+      <img src="./screenshots/s19-shopify-2.png" alt="Shopify CEO 트윗 2"
+           style="width: 100%; flex: 1; object-fit: contain; object-position: center; min-height: 0;">
+    </div>
+    <!-- 우: 텍스트 -->
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 5vh 4vw; text-align: left; border-left: 1px solid var(--divider);">
+      <div style="font-size: clamp(0.85rem, 1.1vw, 1.1rem); color: var(--muted); letter-spacing: 0.05em; margin-bottom: 2rem;">Shopify — 전 세계 독립 쇼핑몰의 플랫폼, 직원 12,000명</div>
+      <div style="font-size: clamp(1.4rem, 2.2vw, 2.2rem); font-weight: 600; line-height: 1.5; color: var(--fg); margin-bottom: 2rem;">
+        "새로운 포지션에 사람을 채용하기 전에,<br>
+        먼저 AI로는 그 일을 할 수 없다는 걸<br>
+        증명해야 합니다."
+      </div>
+      <div style="font-size: clamp(0.9rem, 1.2vw, 1.2rem); color: var(--muted);">— Shopify CEO Tobi Lütke, 2025년 4월, 전 직원에게</div>
+    </div>
+    <div class="slide-ref">x.com/tobi/status/1909251946235437514</div>
+  </section>
+
+  <!-- S20 Klarna ① -->
+  <section class="slide" style="flex-direction: row; padding: 0; align-items: stretch;">
+    <!-- 좌: 이미지 -->
+    <div style="flex: 1.4; display: flex; align-items: center; overflow: hidden; background: var(--bg);">
+      <img src="./screenshots/s20-klarna1.png" alt="Klarna 700명 대체 기사"
+           style="width: 100%; height: auto; display: block; transform: scale(1.2); transform-origin: center;">
+    </div>
+    <!-- 우: 텍스트 -->
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 5vh 4vw; text-align: left; border-left: 1px solid var(--divider);">
+      <div style="font-size: clamp(0.85rem, 1.1vw, 1.1rem); color: var(--muted); margin-bottom: 2rem;">Klarna — 유럽판 토스, 선구매 후결제 핀테크 앱</div>
+      <div style="font-size: clamp(1.6rem, 2.6vw, 2.6rem); font-weight: 700; color: var(--fg); line-height: 1.4; margin-bottom: 1.2rem;">
+        AI가 고객 서비스 직원<br><span class="em">700명</span> 대체
+      </div>
+      <div style="font-size: clamp(1rem, 1.4vw, 1.4rem); color: var(--muted); margin-bottom: 2.5rem;">예상 절감액: 연 $40M (약 540억 원)</div>
+      <div style="font-size: clamp(1.1rem, 1.6vw, 1.6rem); color: var(--accent); font-weight: 600;">"이 실험이 어떻게 끝났을까요?"</div>
+    </div>
+    <div class="slide-ref">fastcompany.com/91468582/klarna-tried-to-replace-its-workforce-with-ai</div>
+  </section>
+
+  <!-- S21 Klarna ② -->
+  <section class="slide" style="flex-direction: row; padding: 0; align-items: stretch;">
+    <!-- 좌: 이미지 -->
+    <div style="flex: 1.4; display: flex; align-items: center; overflow: hidden; background: var(--bg);">
+      <img src="./screenshots/s21-klarna2.png" alt="Klarna 재채용 기사"
+           style="width: 100%; height: auto; display: block; transform: scale(1.2); transform-origin: center;">
+    </div>
+    <!-- 우: 텍스트 -->
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 5vh 4vw; text-align: left; border-left: 1px solid var(--divider); gap: 1.4rem;">
+      <div style="font-size: clamp(0.85rem, 1.1vw, 1.1rem); color: var(--muted); letter-spacing: 0.05em;">1년 후 결과</div>
+
+      <div style="font-size: clamp(0.95rem, 1.4vw, 1.4rem); line-height: 2;">
+        <div><span class="cross">❌</span> 고객 만족도 하락</div>
+        <div><span class="cross">❌</span> AI가 처리 못 한 복잡한 케이스 폭증</div>
+        <div><span class="check">✅</span> 직원 재채용 시작 (하이브리드 모델 전환)</div>
+      </div>
+
+      <div style="width: 100%; height: 1px; background: var(--divider);"></div>
+
+      <div>
+        <div style="font-size: clamp(1.6rem, 2.4vw, 2.4rem); font-weight: 700; margin-bottom: 0.5rem;">
+          <span class="em">"We went too far."</span>
+        </div>
+        <div style="font-size: clamp(0.9rem, 1.2vw, 1.2rem); color: var(--fg);">— CEO Sebastian Siemiatkowski</div>
+        <div style="font-size: clamp(0.8rem, 1vw, 1rem); color: var(--muted); margin-top: 0.3rem;">직원 수: 7,000명(2022) → 3,000명(2025)</div>
+      </div>
+
+      <div style="font-size: clamp(0.9rem, 1.2vw, 1.2rem); color: var(--muted); border-left: 2px solid var(--divider); padding-left: 1rem; line-height: 1.7;">
+        AI only였을 때, 고객이<br><span style="color:var(--fg);">사람과 연결되고 싶어도 방법이 없었음</span>
+      </div>
+    </div>
+    <div class="slide-ref">digitalapplied.com/blog/klarna-reverses-ai-layoffs-replacing-700-workers-backfired</div>
+  </section>
+
+  <!-- S22 그래도 주니어가 필요합니다 -->
+  <section class="slide quote">
+    <div class="ss-slot" style="max-width: 560px;">
+      <img src="./screenshots/s22-aws.png" alt="AWS CEO 발언"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="ss-fallback">
+        <div style="font-size:1.4rem;">📸</div>
+        <div class="ss-file">s22-aws.png</div>
+        <div class="ss-url">news.ycombinator.com/item?id=46302267</div>
+      </div>
+    </div>
+    <div class="slide-ref">news.ycombinator.com/item?id=46302267</div>
+    <div class="context">AWS CEO Matt Garman — 주니어 AI 대체에 대해</div>
+    <div class="q">"That's like one of the<br>dumbest things I've ever heard"</div>
+    <div class="attribution">— Matt Garman, AWS CEO</div>
+  </section>
+
+  <!-- S23 AI의 한계 -->
+  <section class="slide impact">
+    <div class="text smaller"><span class="em">명령을 실행하는 것</span><br><span style="font-size:0.5em; color:var(--muted); font-weight:400;">AI가 잘하는 것</span></div>
+    <div style="width: 2px; height: 3rem; background: var(--divider); margin: 1.5rem auto;"></div>
+    <div class="text smaller"><span style="color: var(--before);">의도를 소유하는 것</span><br><span style="font-size:0.5em; color:var(--muted); font-weight:400;">AI가 못하는 것</span></div>
+  </section>
+
+  <!-- S24 그래서 누가 이기는가 -->
+  <section class="slide impact">
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 800px; text-align: left; margin-bottom: 2.5rem;">
+      <div style="font-size: clamp(0.95rem, 1.4vw, 1.4rem); color: var(--muted); line-height: 1.7; padding-left: 1.5rem; border-left: 2px solid var(--dim);">
+        "You've got to start with the customer experience and work backwards to the technology."<br>
+        <span style="color: var(--dim); font-size: 0.85em;">— Steve Jobs, 1997</span>
+      </div>
+      <div style="font-size: clamp(0.95rem, 1.4vw, 1.4rem); color: var(--muted); line-height: 1.7; padding-left: 1.5rem; border-left: 2px solid var(--dim);">
+        "There's a new kind of coding I call 'vibe coding',<br>where you fully give in to the vibes, embrace exponentials,<br>and forget that the code even exists."<br>
+        <span style="color: var(--dim); font-size: 0.85em;">— Andrej Karpathy, 2025</span>
+      </div>
+    </div>
+    <div class="text smaller"><span class="em">의도를 가진 사람</span>이 AI를 지휘한다.</div>
+  </section>
+
+  <!-- S25 Topic 2 Section Title -->
+  <section class="slide section">
+    <div class="num">02.</div>
+    <h2>안드로이드, 그리고<br>클라이언트 개발자를<br>꿈꾸는 분들께</h2>
+  </section>
+
+  <!-- S26 AI가 이미 더 잘하는 것들 -->
+  <section class="slide compare">
+    <h2>AI가 이미 더 잘하는 것들</h2>
+    <div class="compare-grid">
+      <div class="header" style="text-align:right;">요즘 새 개발자가 공부하는 것</div>
+      <div></div>
+      <div class="header" style="text-align:left;">AI가 이미 더 잘하는 것</div>
+
+      <div class="left">특정 API 사용법 암기</div>
+      <div class="arrow">→</div>
+      <div class="right">API 문서 읽고 코드 생성</div>
+
+      <div class="left">RecyclerView 패턴 외우기</div>
+      <div class="arrow">→</div>
+      <div class="right">RecyclerView 코드 작성</div>
+
+      <div class="left">문법 오류 고치기</div>
+      <div class="arrow">→</div>
+      <div class="right">문법 오류 즉시 수정</div>
+    </div>
+  </section>
+
+  <!-- S27 실제 면접에서 묻는 것 -->
+  <section class="slide impact">
+    <div style="color: var(--accent); font-size: clamp(0.9rem, 1.2vw, 1.2rem); letter-spacing: 0.1em; margin-bottom: 2rem;">📌 실제 면접 질문</div>
+    <div class="text smaller" style="text-align: left; max-width: 700px; line-height: 1.5;">
+      "이 과제에서 Retrofit을 사용했는데,<br>
+      왜 OkHttp가 아니라 Retrofit이<br>
+      적절하다고 판단했나요?"
+    </div>
+    <div class="footnote">Retrofit이 뭔지는 ChatGPT도 압니다.<br>면접관이 보고 싶은 건 <span class="em">왜</span>라는 판단 과정입니다.</div>
+  </section>
+
+  <!-- S28 그래서 무엇이 중요한가 -->
+  <section class="slide impact">
+    <div class="text smaller" style="color: var(--muted); font-weight: 400; margin-bottom: 1.5rem;">면접장에서 "왜 이 기술을 선택했나요?" 라는 질문을 받았을 때</div>
+    <div class="text">AI한테<br>물어볼 건가요?</div>
+    <div class="footnote"><span class="em">'왜'라는 질문은 여전히 여러분의 몫입니다.</span></div>
+  </section>
+
+  <!-- S29 그래도 직접 공부하는 이유 -->
+  <section class="slide story">
+    <div class="header">지금 내가 공부하는 것</div>
+    <div class="body" style="font-size:clamp(1.2rem,2vw,2rem); margin-bottom: 2rem;">
+      테스트 코드 전략, 코드 리뷰 전략
+    </div>
+    <div class="flow" style="text-align: left; max-width: 600px;">
+      <div class="step" style="color: var(--muted);">"AI가 더 잘 알텐데, 왜 직접 공부하나요?"</div>
+      <div class="step"><span class="arrow">→</span> AI가 제안해줘도, <span class="em">판단은 내가</span> 내려야 합니다</div>
+      <div class="step" style="padding-left: 1.5rem; color: var(--muted);">나와 내 조직에 맞는 걸 찾는 건 AI가 못합니다.</div>
+      <div class="step"><span class="arrow">→</span> 내 머릿속 지식은 <span class="em">전기세도, Claude Max 구독료도</span> 안 나갑니다</div>
+    </div>
+  </section>
+
+  <!-- S30 AI한테 물어보면? -->
+  <section class="slide meme">
+    <div class="chat-box" style="max-width: 800px;">
+      <div><span class="user">Q:</span> "우리 팀 테스트 전략 추천해줘"</div>
+      <div style="margin-top: 0.8rem;"><span class="bot">🤖 AI:</span></div>
+      <div style="color: var(--muted); margin-top: 0.3rem; line-height: 1.7; font-size: 0.9em;">
+        "단위 테스트는 JUnit5 + Mockito로 의존성을 Mock하여 격리된 환경에서 AAA 패턴으로 검증하세요.
+        통합 테스트는 Testcontainers로 구성하고, 커버리지는 피라미드 구조(Unit 70% / Integration 20% / E2E 10%)를 유지하세요."
+      </div>
+      <div style="margin-top: 1rem;"><span class="user">나:</span> <span class="answer">"ㅇㅇ 그렇게 해줘"</span></div>
+    </div>
+    <div class="twist" style="font-size: clamp(1rem, 1.6vw, 1.6rem);">근데 AI는 모릅니다.</div>
+    <div class="tech-note">
+      우리 팀이 <span class="em">2명인지 20명인지</span>. 레거시 스파게티 코드가 쌓였는지.<br>
+      배포가 하루에 한 번인지 열 번인지.
+    </div>
+  </section>
+
+  <!-- S31 그럼 다 알려주면? -->
+  <section class="slide meme">
+    <div class="chat-box" style="max-width: 800px;">
+      <div><span class="user">Q:</span> "우리 팀 2명, 레거시 많음, 배포 하루 10번. 테스트 전략 추천해줘."</div>
+      <div style="margin-top: 0.8rem;"><span class="bot">🤖 AI:</span></div>
+      <div style="color: var(--muted); margin-top: 0.3rem; line-height: 1.7; font-size: 0.9em;">
+        "팀 규모와 배포 빈도를 고려하면 E2E보다 단위 테스트 비중을 높이고,
+        레거시는 핵심 비즈니스 로직부터 커버하는 게 좋습니다. 커버리지는 60%부터 시작하세요."
+      </div>
+    </div>
+    <div class="twist" style="font-size: clamp(1rem, 1.6vw, 1.6rem);">답이 나아졌습니다.</div>
+    <div class="tech-note">
+      근데 <span class="em">"이게 지금 우리한테 맞나?"</span>는<br>
+      여전히 <span class="em">내가</span> 판단합니다.
+    </div>
+  </section>
+
+  <!-- S32 AI 많이 쓸수록 잘 쓰는 것? -->
+  <section class="slide story">
+    <div class="slide-ref">boostcamp.connect.or.kr/insight/expert/ai-dev</div>
+    <div class="ss-slot">
+      <img src="./screenshots/s32-boostcamp-productivity.png" alt="boostcamp 생산성 데이터"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="ss-fallback">
+        <div style="font-size:1.4rem;">📸</div>
+        <div class="ss-file">s32-boostcamp-productivity.png</div>
+        <div class="ss-url">boostcamp.connect.or.kr/insight/expert/ai-dev</div>
+      </div>
+    </div>
+    <div class="body" style="font-size:clamp(1rem,1.5vw,1.5rem); font-weight:500; color:var(--muted);">
+      AI를 더 많이 쓴 건 <span style="color:var(--fg);">주니어 (37%)</span> — 시니어는 27%<br>
+      생산성이 오른 건 <span class="em">시니어뿐</span> — Daniotti et al., Science
+    </div>
+  </section>
+
+  <!-- S33 AI가 짠 코드, 더 좋을까? -->
+  <section class="slide story">
+    <div class="slide-ref">coderabbit.ai/blog/state-of-ai-vs-human-code-generation-report</div>
+    <div class="ss-slot">
+      <img src="./screenshots/s33-coderabbit.png" alt="CodeRabbit 리포트"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="ss-fallback">
+        <div style="font-size:1.4rem;">📸</div>
+        <div class="ss-file">s33-coderabbit.png</div>
+        <div class="ss-url">coderabbit.ai/blog/state-of-ai-vs-human-code-generation-report</div>
+      </div>
+    </div>
+    <div class="body" style="font-size:clamp(1rem,1.5vw,1.5rem); font-weight:500; color:var(--muted);">
+      보안 취약점 <span class="em">2.74배</span>, 주요 이슈 <span class="em">1.7배</span><br>
+      AI는 '동작'은 알아도 '의도'는 모릅니다 — CodeRabbit, 470개 PR (2025)
+    </div>
+    <div class="footnote"><span class="em">그 의도, 어떻게 만들까요?</span></div>
+  </section>
+
+  <!-- S34 클라이언트 개발자의 의도는 두 겹 -->
+  <section class="slide impact">
+    <div class="text smaller" style="margin-bottom: 1.5rem;">AI가 모르는 게 하나 더 있습니다.</div>
+    <div style="display: flex; gap: 3vw; align-items: center; margin-bottom: 2rem;">
+      <div style="font-size: clamp(1.4rem, 2.4vw, 2.4rem); font-weight: 700; text-align: center; line-height: 1.4;">내 의도<br><span style="font-size: 0.55em; color: var(--muted); font-weight: 400;">무엇을 만들 것인가</span></div>
+      <div style="font-size: 2rem; color: var(--accent);">+</div>
+      <div style="font-size: clamp(1.4rem, 2.4vw, 2.4rem); font-weight: 700; text-align: center; line-height: 1.4;">사용자의 의도<br><span style="font-size: 0.55em; color: var(--muted); font-weight: 400;">어떻게 느낄 것인가</span></div>
+    </div>
+    <div class="footnote">"이 애니메이션, Android답게 느껴지나요?"<br>AI는 판단할 수 없습니다.</div>
+  </section>
+
+  <!-- S34-A 모바일 개발자가 공부할 것 -->
+  <section class="slide compare">
+    <h2>작동하는 앱 ≠ 쓰고 싶은 앱</h2>
+    <div class="compare-grid" style="max-width: 900px;">
+      <div class="header" style="text-align:right;">영역</div>
+      <div></div>
+      <div class="header" style="text-align:left;">왜 필요한가</div>
+
+      <div class="left" style="font-weight:700; color:var(--fg);">UX 감각</div>
+      <div class="arrow">—</div>
+      <div class="right">사용자가 진짜 원하는 것을<br>화면 구성으로 풀어내는 것</div>
+
+      <div class="left" style="font-weight:700; color:var(--fg);">네이티브 감각</div>
+      <div class="arrow">—</div>
+      <div class="right">플랫폼을 오래 써봐야 쌓이는<br>기대 동작</div>
+    </div>
+    <div class="compare-center" style="font-size: clamp(1rem, 1.5vw, 1.5rem);">모바일 개발자 = 사람이 쓰는 앱</div>
+  </section>
+
+  <!-- S34-B 모바일, 어디서부터? -->
+  <section class="slide list">
+    <h2>모바일, 어디서부터?</h2>
+    <ol class="num-list">
+      <li>
+        <div class="title">Jetpack Compose</div>
+        <div class="desc">선언형 = "이런 화면이면 좋겠어"를 코드로 표현<br>AI에게 말하는 방식과 거의 동일</div>
+      </li>
+      <li>
+        <div class="title">아키텍처 WHY 물어보기 (MVVM, Repository)</div>
+        <div class="desc">"왜 이렇게 나눠야 해?" — 구글링보다 AI한테<br>WHY를 알면, 의도를 설계할 수 있다</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- S35 실제로 챙겨야 할 것들 -->
+  <section class="slide list">
+    <h2>실제로 챙겨야 할 4가지</h2>
+    <ol class="num-list">
+      <li>
+        <div class="title">내가 뭘 원하는지 말로 만드는 능력</div>
+      </li>
+      <li>
+        <div class="title">문제를 먼저 정의하는 습관</div>
+      </li>
+      <li>
+        <div class="title">AI 결과물을 검증하는 눈</div>
+      </li>
+      <li>
+        <div class="title">당연해 보여도 의심하는 태도</div>
+      </li>
+    </ol>
+    <div class="list-emphasis">결국 전부 의도에서 시작합니다.</div>
+  </section>
+
+  <!-- S36 Topic 2 핵심 -->
+  <section class="slide impact">
+    <div class="text smaller" style="color: var(--muted); font-weight: 400; margin-bottom: 2rem;">어디서 시작하든 괜찮습니다.</div>
+    <div class="text smaller">어떤 문제 풀고 싶어요?<br>그 문제를 겪는 사람은 누구예요?</div>
+  </section>
+
+  <!-- S37 Topic 3 Section Title -->
+  <section class="slide section">
+    <div class="num">03.</div>
+    <h2>그럼 나는<br>지금 뭘 해야 하나요?</h2>
+  </section>
+
+  <!-- S38 청중 참여 ① -->
+  <section class="slide audience">
+    <div class="text">AI로 과제<br>코드 짜보신 분<br><span class="em">채팅에 ㅇ 쳐주세요.</span></div>
+  </section>
+
+  <!-- S39 청중 참여 ② -->
+  <section class="slide audience">
+    <div class="text">과제는 끝났는데,</div>
+    <div class="or">—</div>
+    <div class="alt">머릿속엔 뭐가 있어요?</div>
+  </section>
+
+  <!-- S40 머릿속 상태 -->
+  <section class="slide impact">
+    <div class="ss-slot" style="max-width: 560px;">
+      <img src="./screenshots/s40-no-thoughts.png" alt="No thoughts head empty"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="ss-fallback">
+        <div style="font-size:1.4rem;">📸</div>
+        <div class="ss-file">s40-no-thoughts.png</div>
+        <div class="ss-url">knowyourmeme.com/memes/no-thoughts-head-empty</div>
+      </div>
+    </div>
+    <div class="footnote">과제 제출 후 머릿속 상태<br><br>근데 이게 농담이 아닌 연구 결과가 있습니다.</div>
+  </section>
+
+  <!-- S41 AI 쓸수록 생각 근육이 약해진다 -->
+  <section class="slide story">
+    <div class="slide-ref">boostcamp.connect.or.kr/insight/ai/learning-in-ai-era</div>
+    <div class="ss-slot">
+      <img src="./screenshots/s41-mit.png" alt="MIT 뇌파 연구"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="ss-fallback">
+        <div style="font-size:1.4rem;">📸</div>
+        <div class="ss-file">s41-mit.png</div>
+        <div class="ss-url">boostcamp.connect.or.kr/insight/ai/learning-in-ai-era</div>
+      </div>
+    </div>
+    <div class="body" style="font-size:clamp(1rem,1.5vw,1.5rem); font-weight:500; color:var(--muted);">
+      AI 활용 그룹 — 세 그룹 중 <span class="em">가장 약한 뇌 활동</span><br>
+      자신이 쓴 글인데도 인용하지 못함 — MIT, 2024
+    </div>
+  </section>
+
+  <!-- S42 잘 쓰고 있다고 생각하는데 -->
+  <section class="slide story">
+    <div class="slide-ref">boostcamp.connect.or.kr/insight/ai/critical-thinking</div>
+    <div class="ss-slot">
+      <img src="./screenshots/s42-boostcamp-metacog.png" alt="boostcamp 메타인지 연구"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="ss-fallback">
+        <div style="font-size:1.4rem;">📸</div>
+        <div class="ss-file">s42-boostcamp-metacog.png</div>
+        <div class="ss-url">boostcamp.connect.or.kr/insight/ai/critical-thinking</div>
+      </div>
+    </div>
+    <div class="body" style="font-size:clamp(1rem,1.5vw,1.5rem); font-weight:500; color:var(--muted);">
+      "AI를 비판적으로 검토한다" — 학습자 자기 평가<br>
+      실제 면담 결과: <span class="em">검증의 깊이가 얕다</span> — boostcamp 연구<br>
+      <span style="font-size:0.85em;">AI 활용 중 가장 방해된 것 1위: 인지적 의존성 및 사고 저해</span>
+    </div>
+  </section>
+
+  <!-- S43 지금 뭐가 제일 재밌어요? -->
+  <section class="slide impact">
+    <div class="text smaller">끌리는 게 없으면,<br>틀려도 모릅니다.</div>
+    <div style="width: 2px; height: 2rem; background: var(--divider); margin: 1.5rem auto;"></div>
+    <div class="text smaller">끌리는 게 생기면,<br><span class="em">나머지는 따라옵니다.</span></div>
+  </section>
+
+  <!-- S44 끝낸 것과 배운 것은 다릅니다 -->
+  <section class="slide impact">
+    <div class="text smaller" style="color: var(--muted);">AI로 과제를 끝낸 것.</div>
+    <div style="width: 2px; height: 2rem; background: var(--divider); margin: 1.5rem auto;"></div>
+    <div class="text smaller">AI로 내가 <span class="em">고민한</span> 것.</div>
+    <div class="text" style="margin-top: 2rem;">다릅니다.</div>
+  </section>
+
+  <!-- S45 중심 질문 재등장 -->
+  <section class="slide impact">
+    <div class="text">AI가 내 의도까지<br>잘 알고 있다고<br>생각하나요?</div>
+  </section>
+
+  <!-- S46 답 -->
+  <section class="slide impact">
+    <div class="text smaller" style="color: var(--muted); font-weight: 400; margin-bottom: 1.5rem;">오늘의 이야기가</div>
+    <div class="text smaller">"개발자가 AI에<br>대체될 것인가"에 대한<br><span class="em">제 답</span>입니다.</div>
+  </section>
+
+  <!-- S47 마무리 메시지 -->
+  <section class="slide impact">
+    <div class="text">상상을 현실로<br>내가 만들 수 있는 시대.</div>
+    <div class="footnote">
+      뭘 만들고 싶은지만 정하면 됩니다.<br><br>
+      <span class="em" style="font-size:1.2em; font-weight:700;">지금, 꽤 재미있는 시대 아닌가요?</span>
+    </div>
+  </section>
+
+  <!-- S48 Q&A -->
+  <section class="slide simple">
+    <div class="text">Q&amp;A</div>
+  </section>
+
+</div>
+
+<div class="slide-number">
+  <span id="current">01</span> <span class="total">/ <span id="total">48</span></span>
+</div>
+<div class="progress" id="progress"></div>
+<div class="hint" id="hint">← → 또는 Space로 이동</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const currentEl = document.getElementById('current');
+  const totalEl = document.getElementById('total');
+  const progressEl = document.getElementById('progress');
+  const hintEl = document.getElementById('hint');
+  let index = 0;
+
+  totalEl.textContent = String(total).padStart(2, '0');
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function show(i) {
+    index = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s, k) => s.classList.toggle('active', k === index));
+    currentEl.textContent = pad(index + 1);
+    progressEl.style.width = ((index + 1) / total * 100) + '%';
+    history.replaceState(null, '', '#' + (index + 1));
+  }
+
+  function next() { show(index + 1); }
+  function prev() { show(index - 1); }
+  function first() { show(0); }
+  function last() { show(total - 1); }
+
+  document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+      case ' ':
+      case 'PageDown':
+        e.preventDefault(); next(); break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+      case 'PageUp':
+        e.preventDefault(); prev(); break;
+      case 'Home':
+        e.preventDefault(); first(); break;
+      case 'End':
+        e.preventDefault(); last(); break;
+      case 'f':
+      case 'F':
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        } else {
+          document.exitFullscreen();
+        }
+        break;
+    }
+  });
+
+  document.getElementById('deck').addEventListener('click', (e) => {
+    const x = e.clientX;
+    const w = window.innerWidth;
+    if (x < w * 0.3) prev();
+    else next();
+  });
+
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(dx) > 40) {
+      if (dx < 0) next(); else prev();
+    }
+  }, { passive: true });
+
+  setTimeout(() => hintEl.classList.add('hidden'), 4000);
+
+  const initial = parseInt(location.hash.replace('#', ''), 10);
+  if (initial && initial >= 1 && initial <= total) {
+    show(initial - 1);
+  } else {
+    show(0);
+  }
+</script>
+
+</body>
+</html>

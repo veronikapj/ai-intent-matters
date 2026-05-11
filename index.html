@@ -611,6 +611,37 @@
     animation: delayedAppear 0.5s ease 2.8s forwards;
   }
 
+  /* ---------- Android Demo Animation ---------- */
+  @keyframes androidCardIn {
+    0%   { transform: translateY(60px) scale(0.95); opacity: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+    40%  { transform: translateY(0) scale(1); opacity: 1; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+    70%  { transform: translateY(0) scale(1); opacity: 1; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+    100% { transform: translateY(60px) scale(0.95); opacity: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+  }
+  @keyframes fabPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 4px 12px rgba(255,204,77,0.4); }
+    50%       { transform: scale(1.08); box-shadow: 0 8px 24px rgba(255,204,77,0.7); }
+  }
+  @keyframes ripple {
+    0%   { transform: scale(0.3); opacity: 0.5; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+  .android-demo { position: relative; }
+  .android-card {
+    animation: androidCardIn 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+  .android-fab {
+    animation: fabPulse 1.8s ease-in-out infinite;
+  }
+  .ripple-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: ripple 1.8s ease-out infinite;
+  }
+
   /* ---------- Slide Reference ---------- */
   .slide-ref {
     position: absolute;
@@ -796,14 +827,11 @@
 
   <!-- S08 Strawberry 밈 -->
   <section class="slide impact">
-    <div class="ss-slot" style="max-width: 800px;">
-      <img src="./screenshots/s08-strawberry.png" alt="ChatGPT strawberry"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="ss-fallback">
-        <div style="font-size:1.4rem;">📸</div>
-        <div class="ss-file">s08-strawberry.png</div>
-        <div class="ss-url">distractify.com/p/chatgpt-how-many-rs-in-strawberry<br>또는 tiktok.com/@yallwatchthis/video/7407266420184075562</div>
-      </div>
+    <div style="display: flex; gap: 2vw; align-items: center; width: 100%; max-width: 1200px; justify-content: center;">
+      <img src="./screenshots/s08-strawberry.png" alt="ChatGPT strawberry 1"
+           style="flex: 1; max-width: 48%; max-height: 70vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+      <img src="./screenshots/s08-strawberry2.jpeg" alt="ChatGPT strawberry 2"
+           style="flex: 1; max-width: 48%; max-height: 70vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
     </div>
   </section>
 
@@ -929,18 +957,6 @@
     <div class="slide-ref">helloworld.kurly.com</div>
   </section>
 
-  <!-- S17-B 컬리 블로그 스크린샷 -->
-  <section class="slide impact">
-    <div class="ss-slot" style="max-width: 1000px;">
-      <img src="./screenshots/s17-kurly.png" alt="컬리 기술 블로그"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="ss-fallback" style="min-height: 360px;">
-        <div style="font-size:1.4rem;">📸</div>
-        <div class="ss-file">s17-kurly.png</div>
-        <div class="ss-url">helloworld.kurly.com — AI 토큰 사용량 전사 1위 개발자가 148,000번의 대화에서 배운 것</div>
-      </div>
-    </div>
-    <div class="slide-ref">helloworld.kurly.com</div>
   </section>
 
   <!-- S18 Stack Overflow 역설 -->
@@ -1226,70 +1242,133 @@
   </section>
 
   <!-- S32 AI 많이 쓸수록 잘 쓰는 것? -->
-  <section class="slide story">
-    <div class="slide-ref">boostcamp.connect.or.kr/insight/expert/ai-dev</div>
-    <div class="ss-slot">
+  <section class="slide" style="flex-direction: row; padding: 0; align-items: stretch;">
+    <!-- 좌: 스크린샷 -->
+    <div style="flex: 1.4; display: flex; align-items: center; overflow: hidden; background: var(--bg); padding: 5vh 4vw;">
       <img src="./screenshots/s32-boostcamp-productivity.png" alt="boostcamp 생산성 데이터"
+           style="width: 100%; height: auto; display: block;"
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="ss-fallback">
+      <div class="ss-fallback" style="display:none; min-height:300px; flex-direction:column; align-items:center; justify-content:center; gap:0.8rem; color:var(--dim); width:100%;">
         <div style="font-size:1.4rem;">📸</div>
-        <div class="ss-file">s32-boostcamp-productivity.png</div>
-        <div class="ss-url">boostcamp.connect.or.kr/insight/expert/ai-dev</div>
+        <div style="font-family:monospace; font-size:0.9rem;">s32-boostcamp-productivity.png</div>
       </div>
     </div>
-    <div class="body" style="font-size:clamp(1rem,1.5vw,1.5rem); font-weight:500; color:var(--muted);">
-      AI를 더 많이 쓴 건 <span style="color:var(--fg);">주니어 (37%)</span> — 시니어는 27%<br>
-      생산성이 오른 건 <span class="em">시니어뿐</span> — Daniotti et al., Science
+    <!-- 우: 텍스트 -->
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 5vh 4vw; text-align: left; border-left: 1px solid var(--divider); gap: 1.5rem;">
+      <div style="font-size: clamp(1.3rem, 2vw, 2rem); font-weight: 700; color: var(--fg);">AI 많이 쓸수록<br>잘 쓰는 것이다?</div>
+      <div style="width: 100%; height: 1px; background: var(--divider);"></div>
+      <div style="font-size: clamp(1rem, 1.5vw, 1.5rem); color: var(--muted); line-height: 2;">
+        AI를 더 많이 쓴 건 <span style="color:var(--fg); font-weight:600;">주니어 (37%)</span>, 시니어는 27%<br>
+        생산성이 오른 건 <span class="em">시니어뿐</span>
+      </div>
+      <div style="font-size: clamp(1.1rem, 1.8vw, 1.8rem); font-weight: 600; line-height: 1.7; color: var(--fg);">
+        더 많이 쓴다고 더 잘 쓰는 게 아닙니다.<br>
+        <span class="em">판단력이 있는 사람</span>이 AI를 도구로 만듭니다.<br>
+        <span style="color: var(--muted); font-weight: 400; font-size: 0.9em;">그 판단력이 경험입니다.</span>
+      </div>
+      <div style="font-size: clamp(0.8rem, 1vw, 1rem); color: var(--dim);">— Daniotti et al., Science</div>
     </div>
+    <div class="slide-ref">boostcamp.connect.or.kr/insight/expert/ai-dev</div>
   </section>
 
   <!-- S33 AI가 짠 코드, 더 좋을까? -->
-  <section class="slide story">
-    <div class="slide-ref">coderabbit.ai/blog/state-of-ai-vs-human-code-generation-report</div>
-    <div class="ss-slot">
+  <section class="slide" style="flex-direction: row; padding: 0; align-items: stretch;">
+    <!-- 좌: 스크린샷 -->
+    <div style="flex: 1.4; display: flex; align-items: center; overflow: hidden; background: var(--bg); padding: 5vh 4vw;">
       <img src="./screenshots/s33-coderabbit.png" alt="CodeRabbit 리포트"
+           style="width: 100%; height: auto; display: block; transform: scale(1.15); transform-origin: center;"
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="ss-fallback">
+      <div class="ss-fallback" style="display:none; min-height:300px; flex-direction:column; align-items:center; justify-content:center; gap:0.8rem; color:var(--dim); width:100%;">
         <div style="font-size:1.4rem;">📸</div>
-        <div class="ss-file">s33-coderabbit.png</div>
-        <div class="ss-url">coderabbit.ai/blog/state-of-ai-vs-human-code-generation-report</div>
+        <div style="font-family:monospace; font-size:0.9rem;">s33-coderabbit.png</div>
       </div>
     </div>
-    <div class="body" style="font-size:clamp(1rem,1.5vw,1.5rem); font-weight:500; color:var(--muted);">
-      보안 취약점 <span class="em">2.74배</span>, 주요 이슈 <span class="em">1.7배</span><br>
-      AI는 '동작'은 알아도 '의도'는 모릅니다 — CodeRabbit, 470개 PR (2025)
+    <!-- 우: 텍스트 -->
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 5vh 4vw; text-align: left; border-left: 1px solid var(--divider); gap: 1.5rem;">
+      <div style="font-size: clamp(1.3rem, 2vw, 2rem); font-weight: 700; color: var(--fg);">AI가 짠 코드,<br>더 좋을까?</div>
+      <div style="width: 100%; height: 1px; background: var(--divider);"></div>
+      <div style="font-size: clamp(1rem, 1.5vw, 1.5rem); color: var(--muted); line-height: 2;">
+        보안 취약점 <span class="em">2.74배</span>, 주요 이슈 <span class="em">1.7배</span><br>
+        CodeRabbit, 470개 PR 분석 (2025)
+      </div>
+      <div style="font-size: clamp(1.1rem, 1.8vw, 1.8rem); font-weight: 600; line-height: 1.7; color: var(--fg);">
+        AI가 나쁜 코드를 짜는 게 아닙니다.<br>
+        <span class="em">당신이 말한 것</span>을 짜는 겁니다.<br>
+        <span style="color: var(--muted); font-weight: 400; font-size: 0.9em;">그 판단력, 어떻게 키울까요?</span>
+      </div>
+      <div style="font-size: clamp(0.8rem, 1vw, 1rem); color: var(--dim);">— CodeRabbit</div>
     </div>
-    <div class="footnote"><span class="em">그 의도, 어떻게 만들까요?</span></div>
+    <div class="slide-ref">coderabbit.ai/blog/state-of-ai-vs-human-code-generation-report</div>
   </section>
 
   <!-- S34 클라이언트 개발자의 의도는 두 겹 -->
-  <section class="slide impact">
-    <div class="text smaller" style="margin-bottom: 1.5rem;">AI가 모르는 게 하나 더 있습니다.</div>
-    <div style="display: flex; gap: 3vw; align-items: center; margin-bottom: 2rem;">
-      <div style="font-size: clamp(1.4rem, 2.4vw, 2.4rem); font-weight: 700; text-align: center; line-height: 1.4;">내 의도<br><span style="font-size: 0.55em; color: var(--muted); font-weight: 400;">무엇을 만들 것인가</span></div>
-      <div style="font-size: 2rem; color: var(--accent);">+</div>
-      <div style="font-size: clamp(1.4rem, 2.4vw, 2.4rem); font-weight: 700; text-align: center; line-height: 1.4;">사용자의 의도<br><span style="font-size: 0.55em; color: var(--muted); font-weight: 400;">어떻게 느낄 것인가</span></div>
+  <section class="slide" style="flex-direction: row; padding: 0; align-items: stretch;">
+    <!-- 좌: 텍스트 -->
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 6vh 5vw; gap: 2rem; border-right: 1px solid var(--divider);">
+      <div style="font-size: clamp(0.85rem, 1.1vw, 1.1rem); color: var(--muted);">클라이언트 개발자는 달라요.</div>
+      <div style="font-size: clamp(1.4rem, 2.2vw, 2.2rem); font-weight: 700; line-height: 1.4; color: var(--fg);">AI가 모르는 게<br>하나 더 있습니다.</div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; text-align: center;">
+        <div>
+          <div class="em" style="font-size: clamp(1.1rem, 1.8vw, 1.8rem); font-weight: 700;">내 의도</div>
+          <div style="color: var(--muted); font-size: clamp(0.85rem, 1.1vw, 1.1rem);">무엇을 만들 것인가</div>
+        </div>
+        <div style="font-size: clamp(1.2rem, 1.8vw, 1.8rem); color: var(--accent); font-weight: 700;">+</div>
+        <div>
+          <div class="em" style="font-size: clamp(1.1rem, 1.8vw, 1.8rem); font-weight: 700;">사용자의 의도</div>
+          <div style="color: var(--muted); font-size: clamp(0.85rem, 1.1vw, 1.1rem);">어떻게 느낄 것인가</div>
+        </div>
+      </div>
+      <div style="font-size: clamp(0.95rem, 1.3vw, 1.3rem); color: var(--muted); line-height: 1.7; border-left: 2px solid var(--divider); padding-left: 1rem;">
+        "이 애니메이션, Android답게 느껴지나요?"<br>
+        <span style="color: var(--fg);">AI는 판단할 수 없습니다.</span>
+      </div>
     </div>
-    <div class="footnote">"이 애니메이션, Android답게 느껴지나요?"<br>AI는 판단할 수 없습니다.</div>
+    <!-- 우: 애니메이션 데모 -->
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5vh; background: #111;">
+      <!-- Bottom Sheet 데모 -->
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+        <div style="width: clamp(220px, 28vw, 340px); height: clamp(150px, 19vw, 230px); background: #1a1a1a; border-radius: 14px; overflow: hidden; position: relative; border: 1px solid #2a2a2a;">
+          <div style="padding: 14px 16px;">
+            <div style="width: 55%; height: 7px; background: #333; border-radius: 4px; margin-bottom: 8px;"></div>
+            <div style="width: 35%; height: 5px; background: #2a2a2a; border-radius: 4px;"></div>
+          </div>
+          <div class="android-card" style="position: absolute; bottom: 0; left: 0; right: 0; background: #252525; border-radius: 14px 14px 0 0; padding: 14px 16px; border-top: 1px solid #333;">
+            <div style="width: 30px; height: 3px; background: #444; border-radius: 2px; margin: 0 auto 10px;"></div>
+            <div style="width: 70%; height: 7px; background: var(--fg); border-radius: 4px; margin-bottom: 6px; opacity: 0.85;"></div>
+            <div style="width: 45%; height: 5px; background: var(--accent); border-radius: 4px;"></div>
+          </div>
+        </div>
+        <div style="font-size: clamp(0.85rem, 1.1vw, 1.1rem); color: var(--dim);">Bottom Sheet</div>
+      </div>
+      <!-- FAB 데모 -->
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+        <div style="width: clamp(100px, 12vw, 140px); height: clamp(100px, 12vw, 140px); position: relative; display: flex; align-items: center; justify-content: center;">
+          <div class="ripple-ring" style="position: absolute; width: clamp(80px, 9vw, 110px); height: clamp(80px, 9vw, 110px);"></div>
+          <div class="android-fab" style="width: clamp(68px, 8vw, 94px); height: clamp(68px, 8vw, 94px); background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;">
+            <span style="font-size: clamp(1.8rem, 2.8vw, 2.8rem); color: #0a0a0a; font-weight: 800;">+</span>
+          </div>
+        </div>
+        <div style="font-size: clamp(0.85rem, 1.1vw, 1.1rem); color: var(--dim);">FAB</div>
+      </div>
+    </div>
   </section>
 
   <!-- S34-A 모바일 개발자가 공부할 것 -->
-  <section class="slide compare">
-    <h2>작동하는 앱 ≠ 쓰고 싶은 앱</h2>
-    <div class="compare-grid" style="max-width: 900px;">
-      <div class="header" style="text-align:right;">영역</div>
-      <div></div>
-      <div class="header" style="text-align:left;">왜 필요한가</div>
-
-      <div class="left" style="font-weight:700; color:var(--fg);">UX 감각</div>
-      <div class="arrow">—</div>
-      <div class="right">사용자가 진짜 원하는 것을<br>화면 구성으로 풀어내는 것</div>
-
-      <div class="left" style="font-weight:700; color:var(--fg);">네이티브 감각</div>
-      <div class="arrow">—</div>
-      <div class="right">플랫폼을 오래 써봐야 쌓이는<br>기대 동작</div>
+  <section class="slide impact" style="gap: 3rem;">
+    <div class="text smaller" style="font-weight: 700;">작동하는 앱 ≠ 쓰고 싶은 앱</div>
+    <div style="display: flex; gap: 4vw; align-items: flex-start; max-width: 1000px; width: 100%;">
+      <!-- UX 감각 -->
+      <div style="flex: 1; text-align: center; padding: 2rem; border: 1px solid var(--divider); border-radius: 12px;">
+        <div style="font-size: clamp(1.3rem, 2.2vw, 2.2rem); font-weight: 700; color: var(--fg); margin-bottom: 1rem;">UX 감각</div>
+        <div style="font-size: clamp(0.95rem, 1.4vw, 1.4rem); color: var(--muted); line-height: 1.7;">사용자가 진짜 원하는 것을<br>화면 구성으로 풀어내는 것</div>
+      </div>
+      <!-- 네이티브 감각 -->
+      <div style="flex: 1; text-align: center; padding: 2rem; border: 1px solid var(--divider); border-radius: 12px;">
+        <div style="font-size: clamp(1.3rem, 2.2vw, 2.2rem); font-weight: 700; color: var(--fg); margin-bottom: 1rem;">네이티브 감각</div>
+        <div style="font-size: clamp(0.95rem, 1.4vw, 1.4rem); color: var(--muted); line-height: 1.7;">플랫폼을 오래 써봐야 쌓이는<br>기대 동작</div>
+      </div>
     </div>
-    <div class="compare-center" style="font-size: clamp(1rem, 1.5vw, 1.5rem);">모바일 개발자 = 사람이 쓰는 앱</div>
+    <div style="font-size: clamp(1.2rem, 1.8vw, 1.8rem); color: var(--accent); font-weight: 600;">모바일 개발자 = 사람이 쓰는 앱</div>
   </section>
 
   <!-- S34-B 모바일, 어디서부터? -->
@@ -1330,7 +1409,7 @@
   <!-- S36 Topic 2 핵심 -->
   <section class="slide impact">
     <div class="text smaller" style="color: var(--muted); font-weight: 400; margin-bottom: 2rem;">어디서 시작하든 괜찮습니다.</div>
-    <div class="text smaller">어떤 문제 풀고 싶어요?<br>그 문제를 겪는 사람은 누구예요?</div>
+    <div class="text smaller">어떤 문제 풀고 싶어요?<br>그 문제를 겪는 사람은 누구인가요?</div>
   </section>
 
   <!-- S37 Topic 3 Section Title -->
@@ -1341,7 +1420,10 @@
 
   <!-- S38 청중 참여 ① -->
   <section class="slide audience">
-    <div class="text">AI로 과제<br>코드 짜보신 분<br><span class="em">채팅에 ㅇ 쳐주세요.</span></div>
+    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.8rem;">
+      <div style="font-size: clamp(1.8rem, 3.2vw, 3.2rem); font-weight: 600; color: var(--muted); letter-spacing: -0.01em;">AI로 과제 코드 짜보신 분</div>
+      <div style="font-size: clamp(2.4rem, 5vw, 5rem); font-weight: 600; letter-spacing: -0.01em;"><span class="em">채팅에 ㅇ 쳐주세요.</span></div>
+    </div>
   </section>
 
   <!-- S39 청중 참여 ② -->
@@ -1352,54 +1434,67 @@
   </section>
 
   <!-- S40 머릿속 상태 -->
-  <section class="slide impact">
-    <div class="ss-slot" style="max-width: 560px;">
-      <img src="./screenshots/s40-no-thoughts.png" alt="No thoughts head empty"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="ss-fallback">
-        <div style="font-size:1.4rem;">📸</div>
-        <div class="ss-file">s40-no-thoughts.png</div>
-        <div class="ss-url">knowyourmeme.com/memes/no-thoughts-head-empty</div>
-      </div>
-    </div>
-    <div class="footnote">과제 제출 후 머릿속 상태<br><br>근데 이게 농담이 아닌 연구 결과가 있습니다.</div>
+  <section class="slide impact" style="gap: 2rem;">
+    <div style="font-size: clamp(0.9rem, 1.2vw, 1.2rem); color: var(--muted);">과제 제출 후 머릿속 상태</div>
+    <img src="./screenshots/s40-no-thoughts.png" alt="No thoughts head empty"
+         style="width: 70vw; max-height: 55vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: block; margin: 0 auto;">
+    <div style="font-size: clamp(1rem, 1.5vw, 1.5rem); color: var(--fg); font-weight: 500;">근데 이게 농담이 아닌 연구 결과가 있습니다.</div>
   </section>
 
   <!-- S41 AI 쓸수록 생각 근육이 약해진다 -->
-  <section class="slide story">
-    <div class="slide-ref">boostcamp.connect.or.kr/insight/ai/learning-in-ai-era</div>
-    <div class="ss-slot">
+  <section class="slide" style="flex-direction: row; padding: 0; align-items: stretch;">
+    <!-- 좌: 스크린샷 -->
+    <div style="flex: 1.4; display: flex; align-items: center; overflow: hidden; background: var(--bg); padding: 5vh 4vw;">
       <img src="./screenshots/s41-mit.png" alt="MIT 뇌파 연구"
+           style="width: 100%; height: auto; display: block; transform: scale(1.2); transform-origin: center;"
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="ss-fallback">
+      <div style="display:none; flex-direction:column; align-items:center; justify-content:center; gap:0.8rem; color:var(--dim); width:100%;">
         <div style="font-size:1.4rem;">📸</div>
-        <div class="ss-file">s41-mit.png</div>
-        <div class="ss-url">boostcamp.connect.or.kr/insight/ai/learning-in-ai-era</div>
+        <div style="font-family:monospace; font-size:0.9rem;">s41-mit.png</div>
       </div>
     </div>
-    <div class="body" style="font-size:clamp(1rem,1.5vw,1.5rem); font-weight:500; color:var(--muted);">
-      AI 활용 그룹 — 세 그룹 중 <span class="em">가장 약한 뇌 활동</span><br>
-      자신이 쓴 글인데도 인용하지 못함 — MIT, 2024
+    <!-- 우: 텍스트 -->
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 5vh 4vw; text-align: left; border-left: 1px solid var(--divider); gap: 1.5rem;">
+      <div style="font-size: clamp(1.3rem, 2vw, 2rem); font-weight: 700; color: var(--fg);">AI 쓸수록<br>생각 근육이 약해진다?</div>
+      <div style="width: 100%; height: 1px; background: var(--divider);"></div>
+      <div style="font-size: clamp(1rem, 1.5vw, 1.5rem); color: var(--muted); line-height: 2;">
+        AI 활용 그룹 — 세 그룹 중 <span class="em">가장 약한 뇌 활동</span><br>
+        자신이 쓴 글인데도 인용하지 못함<br>
+        <span style="font-size:0.85em;">— MIT, 2024</span>
+      </div>
+      <div style="font-size: clamp(1.1rem, 1.6vw, 1.6rem); font-weight: 600; color: var(--fg); line-height: 1.7;">
+        의도 없이 쓰면<br>결과물은 나오는데,<br><span class="em">내 안에는 아무것도 쌓이지 않습니다.</span>
+      </div>
     </div>
+    <div class="slide-ref">boostcamp.connect.or.kr/insight/ai/learning-in-ai-era</div>
   </section>
 
   <!-- S42 잘 쓰고 있다고 생각하는데 -->
-  <section class="slide story">
-    <div class="slide-ref">boostcamp.connect.or.kr/insight/ai/critical-thinking</div>
-    <div class="ss-slot">
+  <section class="slide" style="flex-direction: row; padding: 0; align-items: stretch;">
+    <!-- 좌: 스크린샷 -->
+    <div style="flex: 1.4; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--bg); padding: 5vh 4vw;">
       <img src="./screenshots/s42-boostcamp-metacog.png" alt="boostcamp 메타인지 연구"
+           style="max-width: 100%; max-height: 80vh; width: auto; height: auto; display: block; margin: auto;"
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="ss-fallback">
+      <div style="display:none; flex-direction:column; align-items:center; justify-content:center; gap:0.8rem; color:var(--dim); width:100%;">
         <div style="font-size:1.4rem;">📸</div>
-        <div class="ss-file">s42-boostcamp-metacog.png</div>
-        <div class="ss-url">boostcamp.connect.or.kr/insight/ai/critical-thinking</div>
+        <div style="font-family:monospace; font-size:0.9rem;">s42-boostcamp-metacog.png</div>
       </div>
     </div>
-    <div class="body" style="font-size:clamp(1rem,1.5vw,1.5rem); font-weight:500; color:var(--muted);">
-      "AI를 비판적으로 검토한다" — 학습자 자기 평가<br>
-      실제 면담 결과: <span class="em">검증의 깊이가 얕다</span> — boostcamp 연구<br>
-      <span style="font-size:0.85em;">AI 활용 중 가장 방해된 것 1위: 인지적 의존성 및 사고 저해</span>
+    <!-- 우: 텍스트 -->
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 5vh 4vw; text-align: left; border-left: 1px solid var(--divider); gap: 1.5rem;">
+      <div style="font-size: clamp(1.3rem, 2vw, 2rem); font-weight: 700; color: var(--fg);">잘 쓰고 있다고 생각하는데,<br>실제로도 그럴까?</div>
+      <div style="width: 100%; height: 1px; background: var(--divider);"></div>
+      <div style="font-size: clamp(0.9rem, 1.2vw, 1.2rem); color: var(--muted); line-height: 2;">
+        "AI를 비판적으로 검토한다" — 학습자 자기 평가<br>
+        실제 면담 결과: <span class="em">검증의 깊이가 얕다</span><br>
+        — boostcamp 연구
+      </div>
+      <div style="font-size: clamp(1.6rem, 2.6vw, 2.6rem); font-weight: 700; color: var(--fg); line-height: 1.4;">
+        모르니까<br><span class="em">틀린 줄도 모르는 겁니다.</span>
+      </div>
     </div>
+    <div class="slide-ref">boostcamp.connect.or.kr/insight/ai/critical-thinking</div>
   </section>
 
   <!-- S43 지금 뭐가 제일 재밌어요? -->

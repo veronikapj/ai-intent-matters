@@ -593,6 +593,24 @@
     object-fit: contain;
   }
 
+  /* ---------- Delayed Appear ---------- */
+  @keyframes delayedAppear {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .delayed-appear {
+    opacity: 0;
+  }
+  .slide.active .delayed-appear {
+    animation: delayedAppear 0.5s ease 1.8s forwards;
+  }
+  .delayed-appear-2 {
+    opacity: 0;
+  }
+  .slide.active .delayed-appear-2 {
+    animation: delayedAppear 0.5s ease 2.8s forwards;
+  }
+
   /* ---------- Slide Reference ---------- */
   .slide-ref {
     position: absolute;
@@ -1029,20 +1047,24 @@
   </section>
 
   <!-- S22 그래도 주니어가 필요합니다 -->
-  <section class="slide quote">
-    <div class="ss-slot" style="max-width: 560px;">
-      <img src="./screenshots/s22-aws.png" alt="AWS CEO 발언"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="ss-fallback">
-        <div style="font-size:1.4rem;">📸</div>
-        <div class="ss-file">s22-aws.png</div>
-        <div class="ss-url">news.ycombinator.com/item?id=46302267</div>
+  <section class="slide" style="flex-direction: row; padding: 0; align-items: stretch;">
+    <!-- 좌: 텍스트 -->
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 5vh 6vw; text-align: left; border-right: 1px solid var(--divider);">
+      <div style="font-size: clamp(0.8rem, 1vw, 1rem); color: var(--muted); letter-spacing: 0.08em; margin-bottom: 2.5rem;">주니어 AI 대체에 대해</div>
+      <div style="font-size: clamp(1.8rem, 2.8vw, 2.8rem); font-weight: 700; color: var(--fg); line-height: 1.35; margin-bottom: 1.2rem;">
+        "That's like one of the<br>dumbest things<br>I've ever heard"
       </div>
+      <div style="font-size: clamp(0.95rem, 1.3vw, 1.3rem); color: var(--muted); font-weight: 400; line-height: 1.6; margin-bottom: 2rem; padding-left: 0.5rem; border-left: 2px solid var(--divider);">
+        "지금까지 들어본 것 중<br>가장 멍청한 소리 중 하나입니다"
+      </div>
+      <div style="font-size: clamp(0.85rem, 1.1vw, 1.1rem); color: var(--dim);">— Matt Garman, AWS CEO</div>
+    </div>
+    <!-- 우: 이미지 -->
+    <div style="flex: 1.4; display: flex; align-items: center; overflow: hidden; background: var(--bg);">
+      <img src="./screenshots/s22-aws.jpg" alt="AWS CEO 발언"
+           style="width: 100%; height: auto; display: block; transform: scale(1.2); transform-origin: center;">
     </div>
     <div class="slide-ref">news.ycombinator.com/item?id=46302267</div>
-    <div class="context">AWS CEO Matt Garman — 주니어 AI 대체에 대해</div>
-    <div class="q">"That's like one of the<br>dumbest things I've ever heard"</div>
-    <div class="attribution">— Matt Garman, AWS CEO</div>
   </section>
 
   <!-- S23 AI의 한계 -->
@@ -1052,19 +1074,26 @@
     <div class="text smaller"><span style="color: var(--before);">의도를 소유하는 것</span><br><span style="font-size:0.5em; color:var(--muted); font-weight:400;">AI가 못하는 것</span></div>
   </section>
 
-  <!-- S24 그래서 누가 이기는가 -->
-  <section class="slide impact">
-    <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 800px; text-align: left; margin-bottom: 2.5rem;">
-      <div style="font-size: clamp(0.95rem, 1.4vw, 1.4rem); color: var(--muted); line-height: 1.7; padding-left: 1.5rem; border-left: 2px solid var(--dim);">
-        "You've got to start with the customer experience and work backwards to the technology."<br>
-        <span style="color: var(--dim); font-size: 0.85em;">— Steve Jobs, 1997</span>
-      </div>
-      <div style="font-size: clamp(0.95rem, 1.4vw, 1.4rem); color: var(--muted); line-height: 1.7; padding-left: 1.5rem; border-left: 2px solid var(--dim);">
-        "There's a new kind of coding I call 'vibe coding',<br>where you fully give in to the vibes, embrace exponentials,<br>and forget that the code even exists."<br>
-        <span style="color: var(--dim); font-size: 0.85em;">— Andrej Karpathy, 2025</span>
-      </div>
+  <!-- S24-A CEO 비유 -->
+  <section class="slide impact" style="gap: 3rem;">
+    <div style="font-size: clamp(0.9rem, 1.2vw, 1.2rem); color: var(--muted); line-height: 1.7; text-align: center;">
+      "Start with the customer experience<br>and work backwards to the technology."<br>
+      <span style="color: var(--dim); font-size: 0.85em;">— Steve Jobs, 1997</span>
     </div>
-    <div class="text smaller"><span class="em">의도를 가진 사람</span>이 AI를 지휘한다.</div>
+    <div style="font-size: clamp(2rem, 3.2vw, 3.2rem); font-weight: 600; line-height: 1.6; text-align: center; color: var(--muted);">
+      CEO는 코드를 제일 잘 짜는 사람이 아닙니다.<br>
+      마케팅을 제일 잘하는 사람도 아닙니다.<br>
+      <span style="color: var(--fg); font-weight: 700;">방향을 가장 명확하게 가진 사람</span>입니다.
+    </div>
+  </section>
+
+  <!-- S24-B 펀치라인 -->
+  <section class="slide impact" style="gap: 2rem;">
+    <div style="font-size: clamp(0.85rem, 1.1vw, 1.1rem); color: var(--muted); letter-spacing: 0.05em;">AI 시대의 개발자도 마찬가지입니다.</div>
+    <div style="font-size: clamp(1rem, 1.4vw, 1.4rem); color: var(--muted); margin-bottom: 0.5rem;">AI를 어떻게 대해야 할까요?</div>
+    <div class="text">
+      실행은 AI에게.<br><span class="em">의도는 여러분에게.</span>
+    </div>
   </section>
 
   <!-- S25 Topic 2 Section Title -->
@@ -1077,7 +1106,7 @@
   <section class="slide compare">
     <h2>AI가 이미 더 잘하는 것들</h2>
     <div class="compare-grid">
-      <div class="header" style="text-align:right;">요즘 새 개발자가 공부하는 것</div>
+      <div class="header" style="text-align:right;">열심히 공부했는데...</div>
       <div></div>
       <div class="header" style="text-align:left;">AI가 이미 더 잘하는 것</div>
 
@@ -1098,32 +1127,62 @@
   <!-- S27 실제 면접에서 묻는 것 -->
   <section class="slide impact">
     <div style="color: var(--accent); font-size: clamp(0.9rem, 1.2vw, 1.2rem); letter-spacing: 0.1em; margin-bottom: 2rem;">📌 실제 면접 질문</div>
-    <div class="text smaller" style="text-align: left; max-width: 700px; line-height: 1.5;">
-      "이 과제에서 Retrofit을 사용했는데,<br>
-      왜 OkHttp가 아니라 Retrofit이<br>
-      적절하다고 판단했나요?"
+    <div style="font-size: clamp(1.8rem, 3.2vw, 3.2rem); font-weight: 700; text-align: left; line-height: 1.6; letter-spacing: -0.01em;">
+      "앱에서 최근 검색어 10개를<br>
+      저장한다면, 어떤 자료구조를<br>
+      선택할 것 같아요? 왜요?"
     </div>
-    <div class="footnote">Retrofit이 뭔지는 ChatGPT도 압니다.<br>면접관이 보고 싶은 건 <span class="em">왜</span>라는 판단 과정입니다.</div>
+    <div class="footnote">어떤 자료구조를 쓰는지는 ChatGPT도 압니다.<br>면접관이 보고 싶은 건 <span class="em">왜 그걸 선택했는가</span>라는 판단 과정입니다.</div>
   </section>
 
   <!-- S28 그래서 무엇이 중요한가 -->
   <section class="slide impact">
-    <div class="text smaller" style="color: var(--muted); font-weight: 400; margin-bottom: 1.5rem;">면접장에서 "왜 이 기술을 선택했나요?" 라는 질문을 받았을 때</div>
-    <div class="text">AI한테<br>물어볼 건가요?</div>
+    <div style="font-size: clamp(1.2rem, 1.8vw, 1.8rem); color: var(--muted); font-weight: 400; margin-bottom: 1.5rem; line-height: 1.6;">
+      면접장에서<br>"왜 이 기술을 선택했나요?"<br>라는 질문을 받았을 때
+    </div>
+    <div class="text">AI한테 물어볼 건가요?</div>
     <div class="footnote"><span class="em">'왜'라는 질문은 여전히 여러분의 몫입니다.</span></div>
   </section>
 
   <!-- S29 그래도 직접 공부하는 이유 -->
-  <section class="slide story">
-    <div class="header">지금 내가 공부하는 것</div>
-    <div class="body" style="font-size:clamp(1.2rem,2vw,2rem); margin-bottom: 2rem;">
-      테스트 코드 전략, 코드 리뷰 전략
-    </div>
-    <div class="flow" style="text-align: left; max-width: 600px;">
-      <div class="step" style="color: var(--muted);">"AI가 더 잘 알텐데, 왜 직접 공부하나요?"</div>
-      <div class="step"><span class="arrow">→</span> AI가 제안해줘도, <span class="em">판단은 내가</span> 내려야 합니다</div>
-      <div class="step" style="padding-left: 1.5rem; color: var(--muted);">나와 내 조직에 맞는 걸 찾는 건 AI가 못합니다.</div>
-      <div class="step"><span class="arrow">→</span> 내 머릿속 지식은 <span class="em">전기세도, Claude Max 구독료도</span> 안 나갑니다</div>
+  <section class="slide impact" style="gap: 0;">
+    <div style="display: flex; flex-direction: column; gap: 1.6rem; width: 100%; max-width: 1000px;">
+      <!-- 🧑‍💻 질문 1 -->
+      <div style="display: flex; align-items: flex-end; gap: 1rem; align-self: flex-start;">
+        <div style="font-size: clamp(2rem, 3vw, 3rem);">🧑‍💻</div>
+        <div style="background: var(--code-bg); border: 1px solid var(--divider); color: var(--muted); padding: 1rem 1.6rem; border-radius: 20px 20px 20px 4px; font-size: clamp(1.1rem, 1.8vw, 1.8rem); line-height: 1.5;">
+          공부가 여전히 필요한가요?
+        </div>
+      </div>
+      <!-- 🙋‍♀️ 공부 소개 -->
+      <div style="display: flex; align-items: flex-end; gap: 1rem; align-self: flex-end; flex-direction: row-reverse;">
+        <div style="font-size: clamp(2rem, 3vw, 3rem);">🙋‍♀️</div>
+        <div style="background: var(--accent); color: #0a0a0a; padding: 1rem 1.6rem; border-radius: 20px 20px 4px 20px; font-size: clamp(1.1rem, 1.8vw, 1.8rem); line-height: 1.6; font-weight: 700; text-align: right;">
+          필요합니다. 저는 요즘<br>테스트 코드 전략, 코드 리뷰 전략을 공부하고 있어요.
+        </div>
+      </div>
+      <!-- 🧑‍💻 질문 -->
+      <div style="display: flex; align-items: flex-end; gap: 1rem; align-self: flex-start;">
+        <div style="font-size: clamp(2rem, 3vw, 3rem);">🧑‍💻</div>
+        <div style="background: var(--code-bg); border: 1px solid var(--divider); color: var(--muted); padding: 1rem 1.6rem; border-radius: 20px 20px 20px 4px; font-size: clamp(1.1rem, 1.8vw, 1.8rem); line-height: 1.5;">
+          AI가 더 잘 알텐데, 왜 직접 공부하나요?
+        </div>
+      </div>
+      <!-- 🙋‍♀️ 답변 1 -->
+      <div style="display: flex; align-items: flex-end; gap: 1rem; align-self: flex-end; flex-direction: row-reverse;">
+        <div style="font-size: clamp(2rem, 3vw, 3rem);">🙋‍♀️</div>
+        <div style="background: var(--accent); color: #0a0a0a; padding: 1rem 1.6rem; border-radius: 20px 20px 4px 20px; font-size: clamp(1.1rem, 1.8vw, 1.8rem); line-height: 1.6; font-weight: 700; text-align: right;">
+          AI가 제안해줘도, 판단은 내가 내려야 합니다.<br>
+          <span style="font-weight: 500; opacity: 0.65; font-size: 0.9em;">나와 내 조직에 맞는 걸 찾는 건 AI가 못합니다.</span>
+        </div>
+      </div>
+      <!-- 🙋‍♀️ 답변 2 -->
+      <div style="display: flex; align-items: flex-end; gap: 1rem; align-self: flex-end; flex-direction: row-reverse;">
+        <div style="font-size: clamp(2rem, 3vw, 3rem); opacity: 0;">🙋‍♀️</div>
+        <div style="background: var(--accent); color: #0a0a0a; padding: 1rem 1.6rem; border-radius: 20px 20px 4px 20px; font-size: clamp(1.1rem, 1.8vw, 1.8rem); line-height: 1.5; font-weight: 700; text-align: right;">
+          내 머릿속 지식은<br>전기세도, Claude Max 구독료도 안 나갑니다 😄
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1136,9 +1195,13 @@
         "단위 테스트는 JUnit5 + Mockito로 의존성을 Mock하여 격리된 환경에서 AAA 패턴으로 검증하세요.
         통합 테스트는 Testcontainers로 구성하고, 커버리지는 피라미드 구조(Unit 70% / Integration 20% / E2E 10%)를 유지하세요."
       </div>
-      <div style="margin-top: 1rem;"><span class="user">나:</span> <span class="answer">"ㅇㅇ 그렇게 해줘"</span></div>
+      <div class="delayed-appear" style="margin-top: 1rem;"><span class="user">나:</span> <span class="answer">"ㅇㅇ 그렇게 해줘"</span></div>
     </div>
-    <div class="twist" style="font-size: clamp(1rem, 1.6vw, 1.6rem);">근데 AI는 모릅니다.</div>
+  </section>
+
+  <!-- S30-B AI는 모릅니다 -->
+  <section class="slide meme">
+    <div class="twist" style="font-size: clamp(1.4rem, 2.2vw, 2.2rem);">근데 AI는 모릅니다.</div>
     <div class="tech-note">
       우리 팀이 <span class="em">2명인지 20명인지</span>. 레거시 스파게티 코드가 쌓였는지.<br>
       배포가 하루에 한 번인지 열 번인지.
@@ -1402,7 +1465,17 @@
 
   function show(i) {
     index = Math.max(0, Math.min(total - 1, i));
-    slides.forEach((s, k) => s.classList.toggle('active', k === index));
+    slides.forEach((s, k) => {
+      s.classList.toggle('active', k === index);
+      // 애니메이션 재실행: delayed-appear 요소 리셋
+      if (k === index) {
+        s.querySelectorAll('.delayed-appear, .delayed-appear-2').forEach(el => {
+          el.style.animation = 'none';
+          el.offsetHeight; // reflow
+          el.style.animation = '';
+        });
+      }
+    });
     currentEl.textContent = pad(index + 1);
     progressEl.style.width = ((index + 1) / total * 100) + '%';
     history.replaceState(null, '', '#' + (index + 1));
